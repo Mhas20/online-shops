@@ -1,5 +1,5 @@
 <?php
-    include_once "links_icon.php";
+include_once "links_icon.php";
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -13,41 +13,47 @@
             background-image: url('./pics/background.PNG');
             background-size: cover;
             background-attachment: fixed;
-            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
         .headline {
-            position: absolute;
-            top: 350px;
-            left: 250px;
+            margin-top: 100px;
             font-size: 70px;
             color: white;
+            text-align: center;
         }
-        .m_selection {
-            position: absolute;
-            top: 200px;
-            left: 900px;
-            color: white;
+        .selections {
+            display: flex;
+            gap: 50px; /* Space between images */
+            margin-top: 50px;
         }
-        .w_selection {
-            position: absolute;
-            top: 200px;
-            left: 1300px;
-            color: white;
-        }
-        .pics {
+        .selection img {
             width: 300px;
-            height: 750px;
+            height: 800px;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+        .selection {
+            color: white;
+            text-align: center;
         }
     </style>
 </head>
 <body>
 <h1 class="headline">Online Store</h1>
-    <a class="m_selection" href="men.php">
-        <img src="./pics/men_cover.jpg" alt="Men's Wear" class="pics">
+<div class="selections">
+    <a class="selection" href="men.php">
+        <img src="./pics/men_cover.jpg" alt="Men's Wear">
+        <div>Men's Wear</div>
     </a>
-    <a class="w_selection" href="women.php">
-        <img src="./pics/women_cover.jpg" alt="Men's Wear" class="pics">
+    <a class="selection" href="women.php">
+        <img src="./pics/women_cover.jpg" alt="Women's Wear">
+        <div>Women's Wear</div>
     </a>
-
+</div>
 </body>
 </html>
+
+
+
