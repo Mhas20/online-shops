@@ -106,6 +106,30 @@ class User
 
     }
 
+    public static function findbyUser(){
+        $con = self::dbcon();
+        $sql = 'SELECT * FROM user WHERE u_id = :u_id';
+        $stmt = $con->prepare($sql);
+        $stmt->bindParam(':u_id', $u_id);
+        $stmt->execute();
+
+    }
+
+    public static function findAll()
+    {
+        $con = self::dbcon();
+        $sql = 'SELECT * FROM user';
+        $stmt = $con->prepare($sql);
+        $stmt->execute();
+        $results = $stmt->fetchAll(PDO::FETCH_OBJ);
+
+        $users = [];
+        foreach ($results as $result) {
+            $users = new User();
+        }
+
+    }
+
 
 
 

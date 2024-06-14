@@ -82,6 +82,17 @@ class Products
         $this->amount = $amount;
     }
 
+    public static function dbconn()
+    {
+        $servername = "localhost";
+        $username = "root";
+        $password = "";
+        $dbname = "online-shops";
+        return new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+    }
+
+
+
 
 
 
