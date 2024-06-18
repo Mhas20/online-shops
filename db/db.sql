@@ -17,7 +17,9 @@ CREATE TABLE Products (
     p_id int auto_increment PRIMARY KEY,
     p_name varchar(255),
     details text,
-    role varchar(10)
+    role varchar(10),
+    price float,
+    amount int
 );
 
 CREATE TABLE Bestellung (
