@@ -1,3 +1,29 @@
+<?php
+include "../model/User.php";
+include "links_icon.php";
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    if (!empty($_POST["email"]) && !empty($_POST["password"])) {
+
+
+        $user = User::login($_POST["email"], $_POST["password"]);
+
+        if ($user instanceof User) {
+            $_SESSION['u_id'] = $user->getUId();
+            echo "Anmeldung erfolgreich";
+            header("location: view.php");
+            exit();
+        } else {
+            // Login fehlgeschlagen, Fehlermeldung anzeigen
+            $error_message = "E-Mail oder Passwort ist falsch";
+        }
+    } else {
+        // Nicht alle Felder wurden ausgefüllt
+        $error_message = "Bitte füllen Sie alle Felder aus";
+    }
+}
+
+?>
 <!doctype html>
 <html lang="en">
 <head>
@@ -10,7 +36,7 @@
     <title>Login</title>
     <style>
         body {
-            background-image: url('./pics/background.PNG');
+            background-image: url('pics/background.PNG');
             background-size: cover;
             background-attachment: fixed;
             margin: 0;
@@ -39,7 +65,12 @@
             font-size: 1rem;
         }
         .form-container input[type="text"] {
-            font-size: 2rem;
+            width: 100%;
+            font-size: 1rem;
+        }
+        .form-container input[type="password"] {
+            width: 100%;
+            font-size: 1rem;
         }
         .form-container .btn {
             width: 100%;
@@ -51,24 +82,30 @@
 </head>
 <body>
 <h1 class="headline">LOGIN</h1>
-
-<div class="form-container">
-    <div class="input-group mb-3">
-        <div class="input-group-prepend">
-            <span class="input-group-text">Email</span>
+<form action="login.php" method="post">
+    <div class="form-container">
+            <?php if (!empty($error_message)): ?>
+                <div class="alert alert-danger" role="alert">
+                    <?php echo $error_message; ?>
+                </div>
+            <?php endif; ?>
+        <div class="mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text">Email</span>
+            </div>
+            <input type="text"  name="email">
         </div>
-        <input type="text" aria-label="email">
-    </div>
-    <div class="input-group">
-        <div class="input-group-prepend">
-            <span class="input-group-text">Passwort</span>
+        <div class="mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text">Passwort</span>
+            </div>
+            <input type="password" name="password">
         </div>
-        <input type="text" aria-label="password">
+        <div class="input-group">
+            <button type="submit" class="btn btn-success">Login</button>
+        </div>
+        <p class="textcolor">Noch kein Konto? <a href="register.php">Registrierung</a></p>
     </div>
-    <div class="input-group">
-        <button type="button" class="btn btn-success">Login</button>
-    </div>
-    <p class="textcolor">Noch kein Konto? <a href="register.php">Registrierung</a></p>
-    </div>
+</form>
 </body>
 </html>

@@ -25,7 +25,7 @@ include_once "links_icon.php";
         }
         .selections {
             display: flex;
-            gap: 50px; /* Space between images */
+            gap: 50px; /* Abstand */
             margin-top: 50px;
         }
         .selection img {

@@ -1,3 +1,4 @@
+
 <head>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.3/font/bootstrap-icons.min.css">
@@ -8,9 +9,31 @@
         <i class="bi bi-cart" style="font-size: 2rem; color: white;"></i>
     </a>
 </div>
-<div style="position: absolute; top: 42px; right: 80px;">
+<?php
+session_start();
+if (isset($_SESSION['u_id'])) {
+
+?>
+    <div style="position: absolute; top: 42px; right: 80px;">
+        <a href="../controller/logout.php" style="color: white;">
+            LOGOUT
+        </a>
+    </div>
+<?php
+}
+else {
+    ?>
+    <div style="position: absolute; top: 42px; right: 80px;">
     <a href="login.php" style="color: white;">
         LOGIN
+    </a>
+    </div>
+<?php
+}
+?>
+<div style="position: absolute; top: 42px; left: 80px;">
+    <a href="view.php" style="color: white;">
+        Home
     </a>
 </div>
 

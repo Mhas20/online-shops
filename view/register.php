@@ -1,3 +1,22 @@
+<?php
+include "links_icon.php";
+include_once "../model/User.php";
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    if ($_POST['password'] == $_POST['password_ch']) {
+        User::createUser($_POST['fname'], $_POST['lname'], $_POST['password'], $_POST['email'], $_POST['address']);
+        echo "Registrierung erfolgreich";
+        header("location: view.php");
+    }
+    else{
+        echo "Password stimmt nicht überein";
+    }
+
+}
+
+?>
+?>
+
 <!doctype html>
 <html lang="en">
 <head>
@@ -12,7 +31,7 @@
     <title>Register</title>
     <style>
         body {
-            background-image: url('./pics/background.PNG');
+            background-image: url('pics/background.PNG');
             background-size: cover;
             background-attachment: fixed;
             margin: 0;
@@ -33,8 +52,8 @@
             padding: 20px;
             border-radius: 10px;
             position: absolute;
-            top: 350px;
-            left: 700px;
+            top: 250px;
+            left: 650px;
             width: 400px;
         }
 
@@ -47,7 +66,7 @@
         }
 
         .form-container input[type="text"] {
-            font-size: 2rem;
+            font-size: 1rem;
         }
 
         .form-container .btn {
@@ -62,35 +81,49 @@
 <body>
     <h1 class="headline">Register</h1>
 
-    <div class="form-container">
-        <div class="input-group mb-3">
-            <div class="input-group-prepend">
-                <span class="input-group-text">Vorname</span>
+    <form action="register.php" method="post">
+        <div class="form-container">
+            <div class="mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">Vorname</span>
+                </div>
+                <input type="text" class="form-control"  name="fname">
             </div>
-            <input type="text" aria-label="email">
-        </div>
-        <div class="input-group">
-            <div class="input-group-prepend">
-                <span class="input-group-text">Nachname</span>
+            <div class="mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">Nachname</span>
+                </div>
+                <input type="text" class="form-control" name="lname">
             </div>
-            <input type="text" aria-label="password">
-        </div>
-        <div class="input-group mb-3">
-            <div class="input-group-prepend">
-                <span class="input-group-text">Email</span>
+            <div class="mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">Adresse</span>
+                </div>
+                <input type="text" class="form-control" name="address">
             </div>
-            <input type="text" aria-label="email">
-        </div>
-        <div class="input-group">
-            <div class="input-group-prepend">
-                <span class="input-group-text">Passwort</span>
+            <div class="mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">Email</span>
+                </div>
+                <input type="text" class="form-control" name="email">
             </div>
-            <input type="text" aria-label="password">
+            <div class="mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">Passwort</span>
+                </div>
+                <input type="password" class="form-control" name="password">
+            </div>
+            <div class="mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">Passwort wiederholen</span>
+                </div>
+                <input type="password" class="form-control" name="password_ch">
+            </div>
+            <div class="mb-3">
+                <button type="submit" class="btn btn-success">registrieren</button>
+            </div>
         </div>
-        <div class="input-group">
-            <button type="button" class="btn btn-success">Register</button>
-        </div>
-    </div>
+    </form>
 </body>
 </html>
 
