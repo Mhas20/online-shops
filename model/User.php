@@ -91,12 +91,14 @@ class User
         return new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
     }
 
-    public static function createUser(string $fname, string $lname, string $password, string $email, string $role): bool
+    public static function createUser(string $fname, string $lname, string $password, string $email, string $address): bool
     {
         $con = self::dbcon();
         $sql = 'INSERT INTO user (fname, lname, email, password, address) VALUES (:fname, :lname, :email, :pwhash, :address)';
         $stmt = $con->prepare($sql);
+
         $pwhash = password_hash($password,PASSWORD_DEFAULT);
+
         $stmt->bindParam(':fname', $fname);
         $stmt->bindParam(':lname', $lname);
         $stmt->bindParam(':email', $email);
@@ -126,6 +128,37 @@ class User
         $users = [];
         foreach ($results as $result) {
             $users = new User();
+        }
+
+    }
+    public static function findbyEmail(string $email): ?User
+    {
+        $con = self::dbcon();
+        $sql = 'SELECT * FROM User WHERE email = :email';
+        $stmt = $con->prepare($sql);
+        $stmt->bindParam(':email', $email);
+        $stmt->execute();
+        $results = $stmt->fetch(PDO::FETCH_ASSOC);
+        if ($results){
+            return new User($results['u_id'], $results['fname'], $results['lname'], $results['email'], $results['password'], $results['address']);
+        }
+        else{
+            return null;
+        }
+    }
+
+    public static function login(string $email, string $password): User|bool
+    {
+        $user = self::findByEmail($email);
+
+        if ($user) {
+            if (password_verify($password, $user->getPassword())) {
+                return $user;
+            } else {
+                return "falsche PW";
+            }
+        } else {
+            return "falsche User";
         }
 
     }

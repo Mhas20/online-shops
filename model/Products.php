@@ -91,6 +91,22 @@ class Products
         return new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
     }
 
+    public static function createProducts(string $p_name, string $p_price, string $role, string $details, int $amount): bool
+    {
+        $con = self::dbconn();
+        $sql = 'INSERT INTO products (p_name, details, role, price, amount) VALUES (:p_name, :details, :role, :price, :amount)';
+        $stmt = $con->prepare($sql);
+
+        $stmt->bindParam(":p_name", $p_name);
+        $stmt->bindParam(":price", $p_price);
+        $stmt->bindParam(":p_name", $role);
+        $stmt->bindParam(":p_name", $details);
+        $stmt->bindParam(":p_name", $amount);
+
+        return $stmt->execute();
+
+    }
+
 
 
 
