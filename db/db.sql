@@ -18,15 +18,17 @@ CREATE TABLE Products (
     p_name varchar(255),
     details text,
     role varchar(10),
-    price float,
-    amount int
+    price float
+
 );
 
 CREATE TABLE Bestellung (
     b_id int auto_increment PRIMARY KEY,
-    date date,
     u_id int,
     p_id int,
+    date date,
+    amount int,
+    ordernum int,
 
     FOREIGN KEY (u_id) REFERENCES User(u_id),
     FOREIGN KEY (p_id) REFERENCES Products(p_id)

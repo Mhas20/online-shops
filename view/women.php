@@ -1,5 +1,7 @@
 <?php
 include_once "links_icon.php";
+include "../model/Products.php";
+$pro = Products::findAll();
 ?>
 <!doctype html>
 <html lang="en">
@@ -25,10 +27,16 @@ include_once "links_icon.php";
         }
         .product-container {
             display: flex;
+            flex-wrap: wrap;
             justify-content: center;
-            align-items: center;
-            gap: 180px;
+            gap: 180px; /* Abstand zwischen den Produkten */
             margin-top: 50px;
+            max-width: 1200px; /* Maximale Breite des Containers */
+            margin-left: auto;
+            margin-right: auto;
+            overflow-y: auto; /* Falls benötigt, fügt eine vertikale Scrollleiste hinzu */
+            max-height: 600px; /* Maximale Höhe des Containers */
+            padding: 10px; /* Innenabstand für den Container */
         }
         .product {
             text-align: center;
@@ -61,28 +69,17 @@ include_once "links_icon.php";
 <body>
     <h1 class="headline">WOMEN's WEAR</h1>
     <div class="product-container">
-        <div class="product">
-            <a href="">
-                <img src="./pics/product1.jpg" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                <div class="placeholder" style="display:none;">kein Bild</div>
-                <div class="product-name">Product 1</div>
-            </a>
-        </div>
-        <div class="product">
-            <a href="">
-                <img src="./pics/product2.jpg" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                <div class="placeholder" style="display:none;">kein Bild</div>
-                <div class="product-name">Product 2</div>
-            </a>
-        </div>
-        <div class="product">
-            <a href="">
-                <img src="./pics/product3.jpg" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                <div class="placeholder" style="display:none;">kein Bild</div>
-                <div class="product-name">Product 3</div>
-            </a>
-        </div>
+            <?php foreach ($pro as $product) {
+                if ($product->getRole() == 'w') {?>
+                    <div class="product">
+                        <a href="productview.php?id=<?php echo $product->getPId(); ?>">
+                            <img src="" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                            <div class="placeholder" style="display:none;">kein Bild</div>
+                            <div class="product-name"><?php echo $product->getPName(); ?></div>
+                        </a>
+                    </div>
+                <?php }
+            } ?>
     </div>
-
 </body>
 </html>
