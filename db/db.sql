@@ -26,7 +26,7 @@ CREATE TABLE Bestellung (
     b_id int auto_increment PRIMARY KEY,
     u_id int,
     p_id int,
-    date date,
+    dateTime DATETIME,
     amount int,
     ordernum int,
 

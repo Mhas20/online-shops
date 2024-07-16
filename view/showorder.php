@@ -1,145 +1,97 @@
 <?php
-//include "../model/User.php";
-//include "links_icon.php";
-//
-//?>
-<!--<!doctype html>-->
-<!--<html lang="en">-->
-<!--<head>-->
-<!--    <meta charset="UTF-8">-->
-<!--    <meta name="viewport"-->
-<!--          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">-->
-<!--    <meta http-equiv="X-UA-Compatible" content="ie=edge">-->
-<!--       <title>Login</title>-->
-<!--    <style>-->
-<!--        body {-->
-<!--            background-image: url('pics/background.PNG');-->
-<!--            background-size: cover;-->
-<!--            background-attachment: fixed;-->
-<!--            margin: 0;-->
-<!--        }-->
-<!--        .headline {-->
-<!--            font-size: 70px;-->
-<!--            color: white;-->
-<!--            text-align: center;-->
-<!--            margin-top: 20px;-->
-<!--        }-->
-<!--        .textcolor {-->
-<!--            color: white;-->
-<!--        }-->
-<!--        .form-container {-->
-<!--            padding: 20px;-->
-<!--            border-radius: 10px;-->
-<!--            position: absolute;-->
-<!--            top: 350px;-->
-<!--            left: 700px;-->
-<!--            width: 400px;-->
-<!--        }-->
-<!--        .form-container .input-group {-->
-<!--            margin-bottom: 20px;-->
-<!--        }-->
-<!--        .form-container input[type="text"] {-->
-<!--            width: 100%;-->
-<!--            font-size: 1rem;-->
-<!--        }-->
-<!--        .form-container input[type="password"] {-->
-<!--            width: 100%;-->
-<!--            font-size: 1rem;-->
-<!--        }-->
-<!--        .form-container .btn {-->
-<!--            width: 100%;-->
-<!--        }-->
-<!--        .form-container p {-->
-<!--            text-align: center;-->
-<!--        }-->
-<!--    </style>-->
-<!--</head>-->
-<!--<body>-->
-<!--<h1 class="headline">ORDERS</h1>-->
-<!--<form action="showorder.php" method="post">-->
-<!--    <div class="form-container">-->
-<!---->
-<!--    </div>-->
-<!--</form>-->
-<!--</body>-->
-<!--</html>-->
-
-<?php
-//include_once '../model/Bestellung.php';
-//
-//$u_id = 1;
-//$bestellungen = Bestellung::findOrderNum($u_id);
-//?>
-<!---->
-<!--<!DOCTYPE html>-->
-<!--<html lang="de">-->
-<!--<head>-->
-<!--    <meta charset="UTF-8">-->
-<!--    <title>Bestellungen</title>-->
-<!--</head>-->
-<!--<body>-->
-<!--<h1>Bestellungen von User --><?php //echo $u_id?><!--</h1>-->
-<!--    <table border="1">-->
-<!--        <thead>-->
-<!--        <tr>-->
-<!--            <th>OrderNum</th>-->
-<!--            <th>Date</th>-->
-<!--            <th>Amount</th>-->
-<!--            <th>Products</th>-->
-<!--        </tr>-->
-<!--        </thead>-->
-<!--        <tbody>-->
-<!--        --><?php //foreach ($bestellungen as $bestellung): ?>
-<!--            <tr>-->
-<!--                <td><a href="orderdetails.php?--><?php //echo $bestellung->getOrdernum() ?><!--">--><?php //echo $bestellung->getOrdernum(); ?><!--</a></td>-->
-<!--                <td>--><?php //echo $bestellung->getDatum(); ?><!--</td>-->
-<!--                <td>--><?php //echo $bestellung->getAmount(); ?><!--</td>-->
-<!--                <td>--><?php //echo implode(', ', $bestellung->getProdukte()); ?><!--</td>-->
-<!--            </tr>-->
-<!--        --><?php //endforeach; ?>
-<!--        </tbody>-->
-<!--    </table>-->
-<!--</body>-->
-<!--</html>-->
-
-<?php
+include "../view/links_icon.php";
 require_once '../model/Bestellung.php';
+include "../model/User.php";
 
-$u_id = 1; // Beispiel-User-ID
+$u_id = $_SESSION['u_id'];
 $bestellungen = Bestellung::findOrderNum($u_id);
+$name = User::findbyUser($u_id)->getFname() . ' ' . User::findbyUser($u_id)->getLname();
 ?>
-
-<!DOCTYPE html>
-<html lang="de">
+<!doctype html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Bestellungen</title>
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+       <title>Bestellungen</title>
+    <style>
+        body {
+            display: flex;
+            background-image: url('./pics/background.PNG');
+            background-size: cover;
+            background-attachment: fixed;
+            margin: 0;
+            color: white;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+
+        }
+        .product-container{
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 50px;
+            width: 80%;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+            overflow-y: auto;
+            max-height: 600px;
+            padding: 20px;
+        }
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            width: 80%;
+            background: rgba(120, 120, 120);
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 10px;
+        }
+        .cart-item img {
+            width: 100px;
+            height: auto;
+            border-radius: 10px;
+        }
+        .cart-item-details {
+            flex: 1;
+            margin-left: 10px;
+        }
+
+    </style>
 </head>
 <body>
-<h1>Bestellungen von User <?php echo $u_id; ?></h1>
-<?php if (empty($bestellungen)): ?>
+<div class="container">
+    <h1>Bestellungen von  <?php echo $name; ?></h1>
+    <?php if (empty($bestellungen)){ ?>
     <p>Keine Bestellungen gefunden.</p>
-<?php else: ?>
-    <table border="1">
-        <thead>
-        <tr>
-            <th>OrderNum</th>
-            <th>Date</th>
-            <th>Details</th>
-        </tr>
-        </thead>
-        <tbody>
-        <?php foreach ($bestellungen as $bestellung): ?>
-            <tr>
-                <td><?php echo $bestellung->getOrdernum(); ?></td>
-                <td><?php echo $bestellung->getDatum(); ?></td>
-                <td>
-                    <a href="orderdetails.php?ordernum=<?php echo $bestellung->getOrdernum(); ?>">Details anzeigen</a>
-                </td>
-            </tr>
-        <?php endforeach; ?>
-        </tbody>
-    </table>
-<?php endif; ?>
+    <?php }
+    else{ ?>
+        <div class="product-container">
+        <?php
+        if (!empty($_SESSION['u_id'])) {
+            foreach ($bestellungen as $bestellung): {
+                ?>
+                <div class="cart-item">
+                    <img src="./pics/product1.jpg" alt="Produktbild">
+                    <div class="cart-item-details">
+                        <p>BestellNummer: <?php echo $bestellung->getOrdernum(); ?></p>
+                        <p>Datum: <?php echo $bestellung->getDatum(); ?></p>
+                        <h5><a href="orderdetails.php?ordernum=<?php echo $bestellung->getOrdernum(); ?>">Details anzeigen</a></h5>
+                    </div>
+                </div>
+                <?php
+            } endforeach;
+        }
+    }
+    ?>
+    </div>
+</div>
 </body>
 </html>

@@ -6,14 +6,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (!empty($_POST["email"]) && !empty($_POST["password"])) {
 
 
-        $user = User::login($_POST["email"], $_POST["password"]);
+        $user = User::login($_POST['email'], $_POST['password']);
 
         if ($user instanceof User) {
             $_SESSION['u_id'] = $user->getUId();
-            header("location: index.php");
+            header("location: ../view/index2.php");
             exit();
         } else {
             // Login fehlgeschlagen, Fehlermeldung anzeigen
+            print_r($user);
             $error_message = "E-Mail oder Passwort ist falsch";
         }
     } else {

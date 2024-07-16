@@ -1,7 +1,7 @@
 <?php
 include_once "links_icon.php";
 include "../model/Products.php";
-$pro = Products::findAll();
+$products = Products::findAll();
 $current_page = basename($_SERVER['PHP_SELF']);
 
 ?>
@@ -75,7 +75,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
 <body>
 <h1 class="headline">MEN's WEAR</h1>
 <div class="product-container">
-        <?php foreach ($pro as $product) {
+        <?php foreach ($products as $product) {
                 if ($product->getRole() == 'm') {?>
             <div class="product">
                 <a href="productview.php?id=<?php echo $product->getPId(); ?>">

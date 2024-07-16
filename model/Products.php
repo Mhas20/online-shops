@@ -34,39 +34,20 @@ class Products
         return $this->p_name;
     }
 
-    public function setPName(string $p_name): void
+    public function getRole(): string
     {
-        $this->p_name = $p_name;
+        return $this->role;
     }
+
 
     public function getPPrice(): string
     {
         return $this->p_price;
     }
 
-    public function setPPrice(string $p_price): void
-    {
-        $this->p_price = $p_price;
-    }
-
-    public function getRole(): string
-    {
-        return $this->role;
-    }
-
-    public function setRole(string $role): void
-    {
-        $this->role = $role;
-    }
-
     public function getDetails(): string
     {
         return $this->details;
-    }
-
-    public function setDetails(string $details): void
-    {
-        $this->details = $details;
     }
 
     public static function dbconn()
@@ -92,6 +73,9 @@ class Products
         return $stmt->execute();
     }
 
+    /**
+     * @return Products[]
+     */
     public static function findAll(): array
     {
         $con = self::dbconn();

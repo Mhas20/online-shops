@@ -37,29 +37,16 @@ class User
         return $this->fname;
     }
 
-    public function setFname(string $fname): void
-    {
-        $this->fname = $fname;
-    }
 
     public function getLname(): string
     {
         return $this->lname;
     }
 
-    public function setLname(string $lname): void
-    {
-        $this->lname = $lname;
-    }
 
     public function getEmail(): string
     {
         return $this->email;
-    }
-
-    public function setEmail(string $email): void
-    {
-        $this->email = $email;
     }
 
     public function getPassword(): string
@@ -67,20 +54,12 @@ class User
         return $this->password;
     }
 
-    public function setPassword(string $password): void
-    {
-        $this->password = $password;
-    }
 
     public function getAddress(): string
     {
         return $this->address;
     }
 
-    public function setAddress(string $address): void
-    {
-        $this->address = $address;
-    }
 
     public static function dbcon()
     {
@@ -108,12 +87,20 @@ class User
 
     }
 
-    public static function findbyUser(){
+    public static function findbyUser($u_id){
         $con = self::dbcon();
         $sql = 'SELECT * FROM user WHERE u_id = :u_id';
         $stmt = $con->prepare($sql);
         $stmt->bindParam(':u_id', $u_id);
         $stmt->execute();
+        $results = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        return new User($results['u_id'],
+            $results['fname'],
+            $results['lname'],
+            $results['email'],
+            $results['password'],
+            $results['address']);
 
     }
 
@@ -131,7 +118,7 @@ class User
         }
 
     }
-    public static function findbyEmail(string $email): ?User
+    public static function findByEmail(string $email): ?User
     {
         $con = self::dbcon();
         $sql = 'SELECT * FROM User WHERE email = :email';
@@ -139,8 +126,10 @@ class User
         $stmt->bindParam(':email', $email);
         $stmt->execute();
         $results = $stmt->fetch(PDO::FETCH_ASSOC);
+
         if ($results){
             return new User($results['u_id'], $results['fname'], $results['lname'], $results['email'], $results['password'], $results['address']);
+
         }
         else{
             return null;

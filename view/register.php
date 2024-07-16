@@ -8,7 +8,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Überprüfen, ob die Passwörter übereinstimmen
         if ($_POST['password'] === $_POST['password_ch']) {
             // Benutzer erstellen
-            User::createUser($_POST['fname'], $_POST['lname'], password_hash($_POST['password'], PASSWORD_BCRYPT), $_POST['email'], $_POST['address']);
+            User::createUser($_POST['fname'], $_POST['lname'], $_POST['password'], $_POST['email'], $_POST['address']);
             echo "Registrierung erfolgreich";
             header("Location: login.php");
             exit();

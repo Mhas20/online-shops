@@ -1,7 +1,6 @@
 <?php
 include "links_icon.php";
 include "../model/Products.php";
-include "../model/Cart.php";
 
 if (isset($_POST['p_id']) && isset($_POST['amount'])) {
     $productId = (int)$_POST['p_id'];

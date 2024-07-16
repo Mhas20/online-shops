@@ -1,4 +1,6 @@
-
+<?php
+session_start();
+?>
 <head>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.3/font/bootstrap-icons.min.css">
@@ -26,22 +28,16 @@ if ($current_page !== 'cart.php') { ?>
     </a>
 </div>
 <?php }
-session_start();
 if (isset($_SESSION['u_id'])) {
-
 ?>
     <div class="dropdown" style="position: absolute; top: 25px; right: 80px;">
         <a class="btn btn-secondary dropdown-toggle arrow" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-person-circle" style="font-size: 2rem; color: white;"></i></a>
         <ul class="dropdown-menu">
             <li>
-                <a class="dropdown-item" href="showorder.php">
-                    meine Bestellung
-                </a>
+                <a class="dropdown-item" href="showorder.php">meine Bestellung</a>
             </li>
             <li>
-                <a class="dropdown-item" href="../controller/logout.php">
-                    LOGOUT
-                </a>
+                <a class="dropdown-item" href="../controller/logout.php">LOGOUT</a>
             </li>
         </ul>
     </div>
@@ -52,19 +48,15 @@ else {
     <div class="dropdown" style="position: absolute; top: 25px; right: 80px;">
         <a class="btn btn-secondary dropdown-toggle arrow" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-person-circle" style="font-size: 2rem; color: white;"></i></a>
         <ul class="dropdown-menu">
-           <li> <a class="dropdown-item" href="login.php">
-                LOGIN
-            </a></li>
+           <li>
+               <a class="dropdown-item" href="login.php">LOGIN</a>
+           </li>
         </ul>
     </div>
-
-
 <?php
 }
 ?>
 <div style="position: absolute; top: 42px; left: 80px;">
-    <a href="index.php" style="color: white;">
-        Home
-    </a>
+    <a href="index.php" style="color: white;">Home</a>
 </div>
 

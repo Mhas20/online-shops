@@ -71,9 +71,9 @@ class Bestellung
     public static function createBestellung(int $u_id, int $p_id, int $amount, int $ordernum): bool
     {
         $con = self::dbconn();
-        $datum = date('Y-m-d');
+        $datum = date('Y-m-d H:i:s');
 
-        $sql = 'INSERT INTO Bestellung (u_id, p_id, date, amount, ordernum) VALUES (:u_id, :p_id, :datum, :amount, :ordernum)';
+        $sql = 'INSERT INTO Bestellung (u_id, p_id, dateTime, amount, ordernum) VALUES (:u_id, :p_id, :datum, :amount, :ordernum)';
         $stmt = $con->prepare($sql);
         $stmt->bindParam(':u_id', $u_id);
         $stmt->bindParam(':p_id', $p_id);
@@ -87,39 +87,57 @@ class Bestellung
 
 
 
-//    public static function findBestellungById(int $b_id): ?Bestellung
-//    {
-//        $con = self::dbconn();
-//        $sql = 'SELECT * FROM Bestellung WHERE b_id = :b_id';
-//        $stmt = $con->prepare($sql);
-//        $stmt->bindParam(':b_id', $b_id);
-//        $stmt->execute();
-//        $bestellungData = $stmt->fetch(PDO::FETCH_ASSOC);
-//
-//        if ($bestellungData) {
-//            $sql = 'SELECT p_id FROM Bestellung WHERE b_id = :b_id';
-//            $stmt = $con->prepare($sql);
-//            $stmt->bindParam(':b_id', $b_id);
-//            $stmt->execute();
-//            $produkteData = $stmt->fetchAll(PDO::FETCH_COLUMN);
-//
-//            return new Bestellung(
-//                $bestellungData['b_id'],
-//                $bestellungData['u_id'],
-//                $produkteData,
-//                $bestellungData['date'],
-//                $bestellungData['amount'],
-//                $bestellungData['ordernum']
-//            );
-//        } else {
-//            return null;
-//        }
-//    }
+    public static function findBestellungById(int $u_id): ?Bestellung
+    {
+        $con = self::dbconn();
+        $sql = 'SELECT * FROM Bestellung WHERE u_id = :u_id';
+        $stmt = $con->prepare($sql);
+        $stmt->bindParam(':u_id', $u_id);
+        $stmt->execute();
+        $bestellungData = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($bestellungData) {
+            $sql = 'SELECT fname, lname FROM user WHERE u_id = :u_id';
+            $stmt = $con->prepare($sql);
+            $stmt->bindParam(':u_id', $u_id);
+            $stmt->execute();
+            $userData = $stmt->fetchAll(PDO::FETCH_COLUMN);
+
+            return new Bestellung(
+                $bestellungData['b_id'],
+                $bestellungData['u_id'],
+                $userData,
+                $bestellungData['date'],
+                $bestellungData['amount'],
+                $bestellungData['ordernum']
+            );
+        } else {
+            return null;
+        }
+    }
 
     public static function findOrderNum(int $u_id): array
     {
         $con = self::dbconn();
-        $sql = 'SELECT * FROM Bestellung WHERE u_id = :u_id GROUP BY ordernum';
+//        $sql = 'SELECT * FROM Bestellung WHERE u_id = :u_id GROUP BY ordernum';
+        $sql = 'SELECT b.* 
+        FROM Bestellung b 
+        INNER JOIN (
+            SELECT ordernum, MAX(dateTime) as max_date 
+            FROM Bestellung 
+            WHERE u_id = :u_id 
+            GROUP BY ordernum 
+        ) latest 
+        ON b.ordernum = latest.ordernum 
+        AND b.dateTime = latest.max_date 
+        AND b.b_id = (
+            SELECT MIN(b_id)
+            FROM Bestellung
+            WHERE ordernum = b.ordernum
+            AND dateTime = b.dateTime
+        )
+        ORDER BY latest.max_date DESC';
+
         $stmt = $con->prepare($sql);
         $stmt->bindParam(':u_id', $u_id, PDO::PARAM_INT);
         $stmt->execute();
@@ -127,7 +145,7 @@ class Bestellung
 
         $bestellungen = [];
         foreach ($bestellungData as $bestellung) {
-            $sql = 'SELECT p_id FROM Bestellung WHERE ordernum = :ordernum';
+            $sql = 'SELECT p_id FROM Bestellung WHERE ordernum = :ordernum GROUP BY ordernum';
             $stmt = $con->prepare($sql);
             $stmt->bindParam(':ordernum', $bestellung['ordernum'], PDO::PARAM_INT);
             $stmt->execute();
@@ -137,7 +155,7 @@ class Bestellung
                 $bestellung['b_id'],
                 $bestellung['u_id'],
                 $produkteData,
-                $bestellung['date'],
+                $bestellung['dateTime'],
                 $bestellung['amount'],
                 $bestellung['ordernum']
             );
