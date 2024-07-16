@@ -10,11 +10,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         if ($user instanceof User) {
             $_SESSION['u_id'] = $user->getUId();
-            header("location: ../view/index2.php");
+            header("location: ../view/index.php");
             exit();
         } else {
             // Login fehlgeschlagen, Fehlermeldung anzeigen
-            print_r($user);
             $error_message = "E-Mail oder Passwort ist falsch";
         }
     } else {

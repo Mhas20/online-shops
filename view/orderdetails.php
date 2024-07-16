@@ -9,28 +9,9 @@ if (!isset($_GET['ordernum'])) {
 }
 
 $ordernum = (int)$_GET['ordernum'];
-$con = Bestellung::dbconn();
 
-$sql = 'SELECT * FROM Bestellung WHERE ordernum = :ordernum';
-$stmt = $con->prepare($sql);
-$stmt->bindParam(':ordernum', $ordernum, PDO::PARAM_INT);
-$stmt->execute();
-$bestellungen = $stmt->fetchAll(PDO::FETCH_ASSOC);
+$produkte = Bestellung::orderDetails($ordernum);
 
-if (empty($bestellungen)) {
-    die('Keine Bestellungen gefunden.');
-}
-
-$produkte = [];
-foreach ($bestellungen as $bestellung) {
-    $sql = 'SELECT * FROM products WHERE p_id = :p_id';
-    $stmt = $con->prepare($sql);
-    $stmt->bindParam(':p_id', $bestellung['p_id'], PDO::PARAM_INT);
-    $stmt->execute();
-    $produkt = $stmt->fetch(PDO::FETCH_ASSOC);
-    $produkt['amount'] = $bestellung['amount']; // Füge die Amount-Information hinzu
-    $produkte[] = $produkt;
-}
 ?>
 
 <!DOCTYPE html>

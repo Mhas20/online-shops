@@ -85,41 +85,44 @@ class Bestellung
         return true;
     }
 
-
-
-    public static function findBestellungById(int $u_id): ?Bestellung
+    public static function orderDetails(int $ordernum): array
     {
         $con = self::dbconn();
-        $sql = 'SELECT * FROM Bestellung WHERE u_id = :u_id';
+
+        $sql = 'SELECT * FROM Bestellung WHERE ordernum = :ordernum';
         $stmt = $con->prepare($sql);
-        $stmt->bindParam(':u_id', $u_id);
+        $stmt->bindParam(':ordernum', $ordernum, PDO::PARAM_INT);
         $stmt->execute();
-        $bestellungData = $stmt->fetch(PDO::FETCH_ASSOC);
+        $bestellungen = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-        if ($bestellungData) {
-            $sql = 'SELECT fname, lname FROM user WHERE u_id = :u_id';
-            $stmt = $con->prepare($sql);
-            $stmt->bindParam(':u_id', $u_id);
-            $stmt->execute();
-            $userData = $stmt->fetchAll(PDO::FETCH_COLUMN);
-
-            return new Bestellung(
-                $bestellungData['b_id'],
-                $bestellungData['u_id'],
-                $userData,
-                $bestellungData['date'],
-                $bestellungData['amount'],
-                $bestellungData['ordernum']
-            );
-        } else {
-            return null;
+        if (empty($bestellungen)) {
+            die('Keine Bestellungen gefunden.');
         }
+
+        $produkte = [];
+        foreach ($bestellungen as $bestellung) {
+            $sql = 'SELECT * FROM products WHERE p_id = :p_id';
+            $stmt = $con->prepare($sql);
+            $stmt->bindParam(':p_id', $bestellung['p_id'], PDO::PARAM_INT);
+            $stmt->execute();
+            $produkt = $stmt->fetch(PDO::FETCH_ASSOC);
+            $produkt['amount'] = $bestellung['amount']; // Füge die Amount-Information hinzu
+            $produkte[] = $produkt;
+        }
+
+        return $produkte;
+
     }
+
+
+
 
     public static function findOrderNum(int $u_id): array
     {
         $con = self::dbconn();
-//        $sql = 'SELECT * FROM Bestellung WHERE u_id = :u_id GROUP BY ordernum';
+//        $sql = 'SELECT * FROM Bestellung WHERE u_id = :u_id GROUP BY ordernum'; // nur Gruppierung
+
+        // Gruppierung und Sortierung nach Datum uasserdem nur eine b_id anzeigen um die Bestellung nicht doppelt anzuzeigen
         $sql = 'SELECT b.* 
         FROM Bestellung b 
         INNER JOIN (
