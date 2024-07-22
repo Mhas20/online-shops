@@ -3,4 +3,4 @@ Diese Webseite bietet jeweils für beide Geschlechter je nach Auswahl verschiede
 Den Käufer soll es ermöglicht werden sich einzuloggen und seine ausgewählten Artikel in seinen eigenen Warenkorb hinzuzufügen.
 Die Artikel werden als Bilder die als link dienen verwendet. Eine separate Seite soll geöffnet werden wo die Produktbeschreibung 
 für dieses Artikel steht und die Artikeln die man ausgewählt hat in dem Warenkorb zupacken um am Ende den Gesamtbetrag auszugeben 
-und zu bezahlen (ohne Bezahlfunktion).
+und zu bezahlen (ohne Bezahlfunktion). (Composer Faker installiern !!Erfoderlich!!)
