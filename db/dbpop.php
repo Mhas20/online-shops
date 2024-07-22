@@ -1,7 +1,8 @@
 <?php
 
 include "../model/Products.php";
-include "../view/pics/men/Casual_T-Shirt.jpg";
+
+
 $productsData = [
     [
         'name' => 'Elegant Dress by BrandA',
