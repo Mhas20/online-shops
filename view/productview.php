@@ -124,7 +124,7 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
             <div class="product-container-left">
                 <div class="product">
                     <input type="hidden" name="p_id" id="p_id" value="<?php echo $product->getPId() ?>">
-                    <img src="./pics/product1.jpg" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <img src="<?php echo $product->getImage(); ?>" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                     <div class="placeholder" style="display:none;">kein Bild</div>
                     <div class="product-name"><?php echo $product->getPName() ?> </div>
                 </div>

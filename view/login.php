@@ -10,7 +10,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         if ($user instanceof User) {
             $_SESSION['u_id'] = $user->getUId();
-            header("location: ../view/index.php");
+            header("location: ../view/view.php");
             exit();
         } else {
             // Login fehlgeschlagen, Fehlermeldung anzeigen

@@ -85,7 +85,7 @@ $produkte = Bestellung::orderDetails($ordernum);
 
                 ?>
                 <div class="cart-item">
-                    <img src="./pics/product1.jpg" alt="Produktbild">
+                    <img src="<?php echo $produkt['image']; ?>" alt="Produktbild">
                     <div class="cart-item-details">
                         <p>Produkt-Nr.: <?php echo $produkt['p_id']; ?></p>
                         <p><?php echo $produkt['p_name']; ?></p>

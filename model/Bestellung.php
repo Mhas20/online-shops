@@ -57,8 +57,6 @@ class Bestellung
         return $this->ordernum;
     }
 
-
-
     public static function dbconn()
     {
         $servername = "localhost";
@@ -108,14 +106,11 @@ class Bestellung
             $produkt = $stmt->fetch(PDO::FETCH_ASSOC);
             $produkt['amount'] = $bestellung['amount']; // Füge die Amount-Information hinzu
             $produkte[] = $produkt;
-        }
 
+        }
         return $produkte;
 
     }
-
-
-
 
     public static function findOrderNum(int $u_id): array
     {

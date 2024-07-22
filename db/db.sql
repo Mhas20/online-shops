@@ -18,7 +18,8 @@ CREATE TABLE Products (
     p_name varchar(255),
     details text,
     role varchar(10),
-    price float
+    price float,
+    image VARCHAR(255)
 
 );
 

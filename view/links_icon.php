@@ -57,6 +57,6 @@ else {
 }
 ?>
 <div style="position: absolute; top: 42px; left: 80px;">
-    <a href="index.php" style="color: white;">Home</a>
+    <a href="view.php" style="color: white;">Home</a>
 </div>
 

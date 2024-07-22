@@ -128,7 +128,7 @@ if (isset($_POST['remove']) && isset($_POST['p_id'])) {
                     $product = Products::findbyId($productId);
                     ?>
                         <div class="cart-item">
-                            <img src="./pics/product1.jpg" alt="Produktbild">
+                            <img src="<?php echo $product->getImage(); ?>" alt="Produktbild">
                             <div class="cart-item-details">
                                 <h2><?php echo $product->getPName(); ?></h2>
                                 <h4 id="price<?php echo $counter; ?>"><?php echo $product->getPPrice() ?> €</h4>

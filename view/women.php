@@ -73,7 +73,7 @@ $pro = Products::findAll();
                 if ($product->getRole() == 'w') {?>
                     <div class="product">
                         <a href="productview.php?id=<?php echo $product->getPId(); ?>">
-                            <img src="" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                            <img src="<?php echo $product->getImage(); ?>" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                             <div class="placeholder" style="display:none;">kein Bild</div>
                             <div class="product-name"><?php echo $product->getPName(); ?></div>
                         </a>
