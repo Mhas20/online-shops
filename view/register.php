@@ -7,11 +7,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!empty($_POST['fname']) && !empty($_POST['lname']) && !empty($_POST['password']) && !empty($_POST['email']) && !empty($_POST['address']) && !empty($_POST['password_ch'])) {
         // Überprüfen, ob die Passwörter übereinstimmen
         if ($_POST['password'] === $_POST['password_ch']) {
-            // Benutzer erstellen
-            User::createUser($_POST['fname'], $_POST['lname'], $_POST['password'], $_POST['email'], $_POST['address']);
-            echo "Registrierung erfolgreich";
-            header("Location: login.php");
-            exit();
+            try {
+                // Benutzer erstellen
+                if (User::createUser($_POST['fname'], $_POST['lname'], $_POST['password'], $_POST['email'], $_POST['address'])) {
+                    echo "Registrierung erfolgreich";
+                    header("Location: login.php");
+                    exit();
+                } else {
+                    $error_message = "Fehler bei der Registrierung. Bitte versuchen Sie es erneut.";
+                }
+            } catch (Exception $e) {
+                $error_message = $e->getMessage();
+            }
         } else {
             $error_message = "Passwörter stimmen nicht überein.";
         }
@@ -45,9 +52,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             margin-top: 20px;
         }
 
-        .textcolor {
-            color: white;
-        }
 
         .form-container {
             padding: 20px;

@@ -73,17 +73,27 @@ class User
     public static function createUser(string $fname, string $lname, string $password, string $email, string $address): bool
     {
         $con = self::dbcon();
-        $sql = 'INSERT INTO user (fname, lname, email, password, address) VALUES (:fname, :lname, :email, :pwhash, :address)';
-        $stmt = $con->prepare($sql);
+        try {
+            $sql = 'INSERT INTO user (fname, lname, email, password, address) VALUES (:fname, :lname, :email, :pwhash, :address)';
+            $stmt = $con->prepare($sql);
 
-        $pwhash = password_hash($password,PASSWORD_DEFAULT);
+            $pwhash = password_hash($password,PASSWORD_DEFAULT);
 
-        $stmt->bindParam(':fname', $fname);
-        $stmt->bindParam(':lname', $lname);
-        $stmt->bindParam(':email', $email);
-        $stmt->bindParam(':pwhash', $pwhash);
-        $stmt->bindParam(':address', $address);
-        return $stmt->execute();
+            $stmt->bindParam(':fname', $fname);
+            $stmt->bindParam(':lname', $lname);
+            $stmt->bindParam(':email', $email);
+            $stmt->bindParam(':pwhash', $pwhash);
+            $stmt->bindParam(':address', $address);
+            return $stmt->execute();
+
+        } catch (PDOException $e) {
+
+            if ($e->getCode() == 23000) {
+                throw new Exception("Diese E-Mail-Adresse ist bereits vergeben.");
+            } else {
+                throw new Exception("Fehler bei der Registrierung: " . $e->getMessage());
+            }
+        }
 
     }
 

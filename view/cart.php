@@ -84,7 +84,7 @@ if (isset($_POST['remove']) && isset($_POST['p_id'])) {
             width: 80%;
             background: rgba(120, 120, 120);
             padding: 10px;
-            margin: 10px 0;
+            margin: 10px;
             border-radius: 10px;
         }
         .cart-item img {
@@ -123,7 +123,7 @@ if (isset($_POST['remove']) && isset($_POST['p_id'])) {
 
             <?php
             $counter = 1;
-            if (isset($_SESSION['cart']) && !empty($_SESSION['cart'])) {
+            if (!empty($_SESSION['cart'])) {
                 foreach ($_SESSION['cart'] as $productId => $quantity) {
                     $product = Products::findbyId($productId);
                     ?>

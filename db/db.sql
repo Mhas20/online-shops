@@ -8,7 +8,7 @@ CREATE TABLE User (
     u_id int auto_increment PRIMARY KEY,
     fname varchar(255),
     lname varchar(255),
-    email varchar(255),
+    email varchar(255) unique ,
     password varchar(255),
     address varchar(255)
 );
