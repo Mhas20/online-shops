@@ -79,7 +79,6 @@ $name = User::findbyUser($u_id)->getFname() . ' ' . User::findbyUser($u_id)->get
             foreach ($bestellungen as $bestellung): {
                 ?>
                 <div class="cart-item">
-                    <img src="" alt="Produktbilder">
                     <div class="cart-item-details">
                         <p>BestellNummer: <?php echo $bestellung->getOrdernum(); ?></p>
                         <p>Datum: <?php echo $bestellung->getDatum(); ?></p>
