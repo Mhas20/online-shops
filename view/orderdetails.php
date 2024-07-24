@@ -51,14 +51,14 @@ $produkte = Bestellung::orderDetails($ordernum);
         .cart-item {
             display: flex;
             justify-content: space-between;
-            width: 80%;
+            width: 90%;
             background: rgba(120, 120, 120);
             padding: 10px;
             margin: 10px 0;
             border-radius: 10px;
         }
         .cart-item img {
-            width: 100px;
+            width: 140px;
             height: auto;
             border-radius: 10px;
         }

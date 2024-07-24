@@ -99,16 +99,33 @@ if (isset($_POST['remove']) && isset($_POST['p_id'])) {
         .quantity-buttons {
             display: flex;
             align-items: center;
+            margin-top: 35px;
+            flex-direction: column;
+            height: 3px;
+
         }
         .quantity-input {
             width: 50px;
             text-align: center;
         }
-        .btn-buy {
+        .amount-show {
+            display: flex;
+            align-items: center;
+
+        }
+        .btn-success {
             display: flex;
             align-items: center;
             border-radius: 10px;
             width: 180px;
+            height: 40px;
+            justify-content: center;
+        }
+        .btn-danger {
+            display: flex;
+            align-items: center;
+            border-radius: 10px;
+            width: 100px;
             height: 40px;
             justify-content: center;
         }
@@ -118,7 +135,7 @@ if (isset($_POST['remove']) && isset($_POST['p_id'])) {
 <body>
 <form method="post">
     <div class="container">
-        <h1>Warenkorb</h1>
+        <h1>CART</h1>
         <div class="product-container">
 
             <?php
@@ -134,16 +151,18 @@ if (isset($_POST['remove']) && isset($_POST['p_id'])) {
                                 <h4 id="price<?php echo $counter; ?>"><?php echo $product->getPPrice() ?> €</h4>
                                 <h3 id="total<?php echo $counter; ?>"><?php echo $product->getPPrice() * $quantity; ?> €</h3>
                             </div>
-                            <div class="quantity-buttons">
-                                Menge:
+                            <div class="amount-show">
+                                Amount:
                                 <input name="quantities[<?php echo $productId; ?>]" id="quantity<?php echo $counter; ?>" type="text" class="form-control quantity-input" value="<?php echo $quantity ?>" min="1" readonly>
-                                <button type="button" class="btn btn-secondary btn-sm" onclick="changeQuantity('quantity<?php echo $counter; ?>', <?php echo $counter; ?>, 1)">+</button>
-                                <button type="button" class="btn btn-secondary btn-sm" onclick="changeQuantity('quantity<?php echo $counter; ?>', <?php echo $counter; ?>, -1)">-</button>
+                            </div>
+                             <div class="quantity-buttons">
+                                <button type="button" class="btn btn-secondary btn-sm" onclick="changeQuantity('quantity<?php echo $counter; ?>', <?php echo $counter; ?>, 1)">&#708;</button>
+                                <button type="button" class="btn btn-secondary btn-sm" onclick="changeQuantity('quantity<?php echo $counter; ?>', <?php echo $counter; ?>, -1)">&#709;</button>
                             </div>
                             <?php $counter++; ?>
                             <form method="post">
                                 <input type="hidden" name="p_id" value="<?php echo $productId; ?>">
-                                <button type="submit" name="remove" class="btn-buy btn-danger btn-sm">Entfernen</button>
+                                <button type="submit" name="remove" class="btn-danger btn-sm"><i class="bi bi-trash"></i></button>
                             </form>
                         </div>
 
@@ -155,7 +174,7 @@ if (isset($_POST['remove']) && isset($_POST['p_id'])) {
                     <h2 id="grand-total"></h2>
                 </div>
                 <div>
-                    <button type="submit" name="buy" class="btn-buy btn-success btn-sm"><h4>SHOP NOW</h4></button>
+                    <button type="submit" name="buy" class="btn-success btn-sm"><h4>SHOP NOW</h4></button>
                 </div>
                 <?php
             } else {
