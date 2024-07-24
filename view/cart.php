@@ -62,8 +62,7 @@ if (isset($_POST['remove']) && isset($_POST['p_id'])) {
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 20px;
-
+            padding: 10px;
         }
         .product-container{
             display: flex;
@@ -76,7 +75,9 @@ if (isset($_POST['remove']) && isset($_POST['p_id'])) {
             margin-right: auto;
             overflow-y: auto; /* Falls benötigt, fügt eine vertikale Scrollleiste hinzu */
             max-height: 600px; /* Maximale Höhe des Containers */
-            padding: 20px; /* Innenabstand für den Container */
+            padding: 10px; /* Innenabstand für den Container */
+            width: 80%;
+            border-radius: 10px;
         }
         .cart-item {
             display: flex;
@@ -95,14 +96,6 @@ if (isset($_POST['remove']) && isset($_POST['p_id'])) {
         .cart-item-details {
             flex: 1;
             margin-left: 10px;
-        }
-        .quantity-buttons {
-            display: flex;
-            align-items: center;
-            margin-top: 35px;
-            flex-direction: column;
-            height: 3px;
-
         }
         .quantity-input {
             width: 50px;
@@ -154,8 +147,6 @@ if (isset($_POST['remove']) && isset($_POST['p_id'])) {
                             <div class="amount-show">
                                 Amount:
                                 <input name="quantities[<?php echo $productId; ?>]" id="quantity<?php echo $counter; ?>" type="text" class="form-control quantity-input" value="<?php echo $quantity ?>" min="1" readonly>
-                            </div>
-                             <div class="quantity-buttons">
                                 <button type="button" class="btn btn-secondary btn-sm" onclick="changeQuantity('quantity<?php echo $counter; ?>', <?php echo $counter; ?>, 1)">&#708;</button>
                                 <button type="button" class="btn btn-secondary btn-sm" onclick="changeQuantity('quantity<?php echo $counter; ?>', <?php echo $counter; ?>, -1)">&#709;</button>
                             </div>
