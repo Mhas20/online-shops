@@ -90,6 +90,7 @@ $productsData = [
     ],
 ];
 
+// die Daten vom Array productsData werden in der Datenbank über der Methode erstellt
 foreach ($productsData as $product) {
     Products::createProducts($product['name'], $product['price'], $product['gender'], $product['description'], $product['image']);
 }

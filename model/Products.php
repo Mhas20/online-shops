@@ -101,6 +101,11 @@ class Products
 
     }
 
+    /**
+     * @param int $p_id
+     * @return Products|null
+     */
+
     public static function findbyId(int $p_id): ?Products
     {
         $con = self::dbconn();
@@ -115,17 +120,6 @@ class Products
         else{
             return null;
         }
-    }
-
-    public static function deleteProducts(): bool
-    {
-        $con = self::dbconn();
-        $sql = 'DELETE FROM products WHERE p_id = :p_id';
-        $stmt = $con->prepare($sql);
-        $stmt->bindParam(":p_id", $p_id);
-        return $stmt->execute();
-
-
     }
 
     public static function startSession()

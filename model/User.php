@@ -97,6 +97,10 @@ class User
 
     }
 
+    /**
+     * @param $u_id
+     * @return User
+     */
     public static function findbyUser($u_id){
         $con = self::dbcon();
         $sql = 'SELECT * FROM user WHERE u_id = :u_id';
@@ -114,20 +118,10 @@ class User
 
     }
 
-    public static function findAll()
-    {
-        $con = self::dbcon();
-        $sql = 'SELECT * FROM user';
-        $stmt = $con->prepare($sql);
-        $stmt->execute();
-        $results = $stmt->fetchAll(PDO::FETCH_OBJ);
-
-        $users = [];
-        foreach ($results as $result) {
-            $users = new User();
-        }
-
-    }
+    /**
+     * @param string $email
+     * @return User|null
+     */
     public static function findByEmail(string $email): ?User
     {
         $con = self::dbcon();
@@ -146,6 +140,11 @@ class User
         }
     }
 
+    /**
+     * @param string $email
+     * @param string $password
+     * @return User|bool
+     */
     public static function login(string $email, string $password): User|bool
     {
         $user = self::findByEmail($email);
