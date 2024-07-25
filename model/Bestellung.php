@@ -40,7 +40,6 @@ class Bestellung
         return $this->produkte;
     }
 
-
     public function getDatum(): string
     {
         return $this->datum;
@@ -57,6 +56,9 @@ class Bestellung
         return $this->ordernum;
     }
 
+    /**
+     * @return PDO
+     */
     public static function dbconn()
     {
         $servername = "localhost";
@@ -66,6 +68,14 @@ class Bestellung
         return new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
     }
 
+
+    /**
+     * @param int $u_id
+     * @param int $p_id
+     * @param int $amount
+     * @param int $ordernum
+     * @return bool
+     */
     public static function createBestellung(int $u_id, int $p_id, int $amount, int $ordernum): bool
     {
         $con = self::dbconn();
@@ -83,10 +93,15 @@ class Bestellung
         return true;
     }
 
+    /**
+     * @param int $ordernum
+     * @return array
+     */
+
     public static function orderDetails(int $ordernum): array
     {
         $con = self::dbconn();
-
+        // Anzeigen der einzelnen Produkte pro Bestellnummer
         $sql = 'SELECT * FROM Bestellung WHERE ordernum = :ordernum';
         $stmt = $con->prepare($sql);
         $stmt->bindParam(':ordernum', $ordernum, PDO::PARAM_INT);
@@ -97,30 +112,47 @@ class Bestellung
             die('Keine Bestellungen gefunden.');
         }
 
-        $produkte = [];
         foreach ($bestellungen as $bestellung) {
             $sql = 'SELECT * FROM products WHERE p_id = :p_id';
             $stmt = $con->prepare($sql);
             $stmt->bindParam(':p_id', $bestellung['p_id'], PDO::PARAM_INT);
             $stmt->execute();
-            $produkt = $stmt->fetch(PDO::FETCH_ASSOC);
-            $produkt['amount'] = $bestellung['amount']; // Füge die Amount-Information hinzu
-            $produkte[] = $produkt;
+            $productData = $stmt->fetch(PDO::FETCH_ASSOC);
+            if ($productData){
+                $product = new Products(
+                    $productData['p_id'],
+                    $productData['p_name'],
+                    $productData['price'],
+                    $productData['role'],
+                    $productData['details'],
+                    $productData['image'],
+                );
+                $bestellung['produkte'][] = $product;
+            }
 
+            $orders[] = new Bestellung(
+                $bestellung['b_id'],
+                $bestellung['u_id'],
+                $bestellung['produkte'],
+                $bestellung['dateTime'],
+                $bestellung['amount'],
+                $bestellung['ordernum'],
+            );
         }
-        return $produkte;
 
+        return $orders;
     }
 
+    /**
+     * @param int $u_id
+     * @return array
+     */
     public static function findOrderNum(int $u_id): array
     {
         $con = self::dbconn();
-//        $sql = 'SELECT * FROM Bestellung WHERE u_id = :u_id GROUP BY ordernum'; // nur Gruppierung
 
-        // Gruppierung und Sortierung nach Datum uasserdem nur eine b_id anzeigen um die Bestellung nicht doppelt anzuzeigen
-        $sql = 'SELECT b.* 
-        FROM Bestellung b 
-        INNER JOIN (
+        // Gruppierung und Sortierung nach Datum außerdem nur eine b_id anzeigen damit die Bestellung nicht doppelt anzuzeigen
+        $sql = 'SELECT b.*  FROM Bestellung b INNER JOIN (
             SELECT ordernum, MAX(dateTime) as max_date 
             FROM Bestellung 
             WHERE u_id = :u_id 

@@ -10,7 +10,7 @@ if (!isset($_GET['ordernum'])) {
 
 $ordernum = (int)$_GET['ordernum'];
 
-$produkte = Bestellung::orderDetails($ordernum);
+$bestellungen = Bestellung::orderDetails($ordernum);
 
 ?>
 
@@ -81,24 +81,25 @@ $produkte = Bestellung::orderDetails($ordernum);
 <div class="container">
     <div class="product-container">
         <?php
-            foreach ($produkte as $produkt): {
-
-                ?>
-                <div class="cart-item">
-                    <img src="<?php echo $produkt['image']; ?>" alt="Produktbild">
-                    <div class="cart-item-details">
-                        <p>Produkt-Nr.: <?php echo $produkt['p_id']; ?></p>
-                        <p><?php echo $produkt['p_name']; ?></p>
-                        <p>
-                            EinzelPreis: <?php echo $produkt['price']; ?> €
-                            <span style="margin-left: 30px">Anzahl: <?php echo $produkt['amount']; ?> Stck</span>
-                        </p>
-                        <p>Gesamtpreis: <?php echo ($produkt['price']*$produkt['amount']) ?> €</p>
-                        <p>Details: <?php echo $produkt['details']; ?></p>
+            foreach ($bestellungen as $bestellung):
+                foreach ($bestellung->getProdukte() as $produkt):
+                    ?>
+                    <div class="cart-item">
+                        <img class="image-container" src="<?php echo $produkt->getImage(); ?>" alt="Produktbild">
+                        <div class="cart-item-details">
+                            <p>Produkt-Nr.: <?php echo $produkt->getPId(); ?></p>
+                            <p><?php echo $produkt->getPName(); ?></p>
+                            <p>
+                                EinzelPreis: <?php echo $produkt->getPPrice(); ?> €
+                                <span style="margin-left: 30px">Anzahl: <?php echo $bestellung->getAmount(); ?> Stck</span>
+                            </p>
+                            <p>Gesamtpreis: <?php echo ($produkt->getPPrice()*$bestellung->getAmount()) ?> €</p>
+                            <p>Details: <?php echo $produkt->getDetails(); ?></p>
+                        </div>
                     </div>
-                </div>
-                <?php
-            } endforeach;
+                    <?php
+                endforeach;
+             endforeach;
 
         ?>
     </div>
